@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+	<typeAlias  alias="userVO" type = "egovframework.model.user.UserVO"/>
+	<resultMap id="user" class="egovframework.model.user.UserVO">
+		<result property="userUid" column="USER_UID"/>
+		<result property="userID" column="USER_ID"/>
+		<result property="userPassword" column="USER_PASSWORD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userBirth" column="USER_BIRTH"/>
+		<result property="userBirthD" column="USER_BIRTHD"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>	
+		<result property="userGender" column="USER_GENDER"/>
+		<result property="zipCode" column="ZIP_CODE"/>
+		<result property="userAddr" column="USER_ADDR"/>
+		<result property="userAddr2" column="USER_ADDR2"/>
+		<result property="userCheck" column="USER_CHECK"/>
+		<result property="userLevel" column="USER_LEVEL"/>
+		<result property="register_dt" column="REGISTER_DT"/>
+		<result property="register_ID" column="REGISTER_ID"/>
+		<result property="update_dt" column="UPDATE_DT"/>
+		<result property="update_ID" column="UPDATE_ID"/>
+		<result property="tmpField1" column="TMPFIELD1"/>
+		<result property="tmpField2" column="TMPFIELD2"/>
+		<result property="tmpField3" column="TMPFIELD3"/>
+	</resultMap>
+
+	<!-- 회원가입 -->
+	<insert id="userDAO.insert" parameterClass="userVO">
+		<![CDATA[
+			INSERT INTO EX_USER 
+				( USER_UID
+				  , USER_ID
+				  , USER_PASSWORD
+				  , USER_NAME
+				  , USER_BIRTH
+				  , USER_BIRTHD
+				  , USER_PHONE
+				  , USER_EMAIL
+				  , USER_GENDER
+				  , ZIP_CODE
+				  , USER_ADDR
+				  , USER_ADDR2
+				  , USER_CHECK
+				  , USER_LEVEL
+				  , REGISTER_DT
+				  , REGISTER_ID
+				  , UPDATE_DT
+				  , UPDATE_ID
+				  , TMPFIELD1
+				  , TMPFIELD2
+				  , TMPFIELD3 )
+			VALUES (
+				  #userUid#
+				  , #userID#
+				  , #userPassword#
+				  , #userName#
+				  , #userBirth#
+				  , #userBirthD#
+				  , #userPhone#
+				  , #userEmail#
+				  , #userGender#
+				  , #zipCode#
+				  , #userAddr#
+				  , #userAddr2#
+				  , #userCheck#
+				  , #userLevel#
+				  , #register_dt# 
+				  , #register_ID# 
+				  , #update_dt# 
+				  , #update_ID# 
+				  , #tmpField1# 
+				  , #tmpField2# 
+				  , #tmpField3# 
+				 )
+		]]>
+	</insert>
+	
+	<!-- 아이디 중복체크  -->
+	<select id="userDAO.idCheck" parameterClass="userVO" resultClass="java.lang.Integer">
+        <![CDATA[
+            SELECT
+                COUNT(*)
+            FROM EX_USER 
+            WHERE USER_ID=#userID#
+        ]]>
+    </select>
+	<!-- <update id="sampleDAO.updateSample">
+		<![CDATA[
+			UPDATE SAMPLE
+			SET ID=#id#
+				, NAME=#name#
+				, DESCRIPTION=#description#
+				, USE_YN=#useYn#
+			WHERE ID=#id#
+		]]>
+	</update>
+	
+	<delete id="sampleDAO.deleteSample">
+		<![CDATA[
+			DELETE FROM SAMPLE 
+			WHERE ID=#id#
+		]]>
+	</delete>
+    
+    <select id="sampleDAO.selectSample" resultMap="sample">
+        <![CDATA[
+            SELECT
+                ID, NAME, DESCRIPTION, USE_YN, REG_USER
+            FROM SAMPLE 
+            WHERE ID=#id#
+        ]]>
+    </select> -->
+</sqlMap>
