@@ -63,7 +63,6 @@ public class UserController extends CommonController{
 			successMsgJson(model,"사용가능한 아이디 입니다.");
 
 		}
-		
 
 		return getJsonView();
 	}
@@ -71,14 +70,15 @@ public class UserController extends CommonController{
 	//회원가입 작성
 	@RequestMapping(value = "/signUP/{mode}/action.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public String action(@Valid ModelMap model,@PathVariable String mode, UserVO userVO) throws Exception {
-
+		
 		if(!"write".equals(mode) && !"update".equals(mode) && !"delete".equals(mode)){
 			failedJson(model);	
 			return getJsonView();
 		}
 		
 		//입력데이터 체크
-		if("write".equals(mode) || "update".equals(mode)){			
+		if("write".equals(mode) || "update".equals(mode)){
+
 			Map<String,String> resultMap = getFormValidation(mode,userVO);
 			if(resultMap!=null) {
 				String result = resultMap.get("result")!=null?String.valueOf(resultMap.get("result")):"";
@@ -93,12 +93,14 @@ public class UserController extends CommonController{
 		}
 		
 		if("write".equals(mode)) {
+			System.out.println("2222222222222222222222222222222222222");
 			userVO.setUserUid(UUID.randomUUID().toString());
 			userVO.setUserEmail(userVO.getEmail()+"@"+userVO.getEmail2());
 			
 			boolean successFlag = false;
 			
 			try {
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>");
 				userService.insert(userVO);
 				successFlag = true;
 			}catch(Exception ex) {
@@ -112,7 +114,7 @@ public class UserController extends CommonController{
 				failedMsgJson(model, "등록처리에 실패하였습니다.\r\n다시 확인해주시기 바랍니다.");
 			}
 			
-			
+		
 		}
 		
 		return getJsonView();
@@ -133,11 +135,15 @@ public class UserController extends CommonController{
 				returnMap.put("message", message);				
 				return returnMap;
 			}
-				
+			
 			if(userVO.getUserID() == null || userVO.getUserID().equals("")) {
 				result = "N";	name = "userID";	message = "아이디를 입력해주시기 바랍니다.";	
 			}else if(userVO.getCheck() == null || userVO.getCheck().equals("")) {
 				result = "N";	name = "userID";	message = "아이디 중복체크를 해주세요.";	
+			}else if(userVO.getCheck() != null && !userVO.getCheck().equals("")){
+				if(userVO.getCheck().equals("false")) {
+					result = "N";	name = "userID";	message = "이미 사용중인 아이디 입니다 새로운 아이디를 적어주세요.";	
+				}	
 			}else if(userVO.getUserPassword() == null || userVO.getUserPassword().equals("")) {
 				result = "N";	name = "userPassword";	message = "패스워드를 입력해주시기 바랍니다.";	
 			}else if(userVO.getUserPassword2() == null || userVO.getUserPassword2().equals("")) {
@@ -160,10 +166,6 @@ public class UserController extends CommonController{
 				result = "N";	name = "email";	message = "이메일을 입력해주시기 바랍니다.";	
 			}else if(userVO.getEmail2() == null || userVO.getEmail2().equals("")) {
 				result = "N";	name = "email2";	message = "이메일을 입력해주시기 바랍니다.";	
-			}
-			
-			if(userVO.getCheck() != null && !userVO.getCheck().equals("") && userVO.getUserCheck().equals("false")){
-				result = "N";	name = "userID";	message = "아이디 중복체크를 해주세요.";	
 			}
 			
 			

@@ -28,13 +28,12 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	
 	@Override
 	public String insert(UserVO userVO) throws Exception {
+		
 		LOGGER.debug(userVO.toString());
-		String id = egovIdGnrService.getNextStringId();
-		userVO.setUserUid(id);
+		String check = userDao.insert(userVO);
 		LOGGER.debug(userVO.toString());
 
-		userDao.insert(userVO);
-		return id;
+		return check;
 	}
 
 	@Override
