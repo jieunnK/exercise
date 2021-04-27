@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="board">
+	<typeAlias  alias="boardVO" type = "egovframework.model.board.BoardVO"/>
+	
+	<insert id="boardDAO.insert" parameterClass="boardVO">
+		<![CDATA[
+			INSERT INTO EX_BOARD 
+				( BOARD_UID
+				  , DATA_TITLE
+				  , DATA_CONTENT
+				  , REGISTER_ID
+				  , REGISTER_DT
+				  , UPDATE_ID
+				  , UPDATE_DT
+				  , BEGIN_DATE
+				  , END_DATE
+				  , DATA_SECRET
+				  , BOARD_TYPE
+				  , BOARD_DIVISION
+				  , DATA_DEP
+				  , BOARD_NUMBERFILE
+				  , CATEGORY1
+				  , CATEGORY2
+				  , CATEGORY3
+				  , TMPFIELD1
+				  , TMPFIELD2
+				  , TMPFIELD3
+				  , TMPFIELD4
+				  , TMPFIELD5
+				  , VIEW_COUNT )
+			VALUES (
+				  #boardUid#
+				  , #dataTitle#
+				  , #dataContent#
+				  , #registerId#
+				  , #registerDt#
+				  , #updateId#
+				  , #updateDt#
+				  , #beginDate#
+				  , #endDate#
+				  , #dataSecret#
+				  , #boardType#
+				  , #boardDivision#
+				  , #dataDep#
+				  , #boardNumberfile#
+				  , #category1# 
+				  , #category2# 
+				  , #category3# 
+				  , #tmpField1# 
+				  , #tmpField2# 
+				  , #tmpField3# 
+				  , #tmpField4#
+				  , #tmpField5#
+				  , #viewCount# 
+				 )
+		]]>
+	</insert>
+	
+
+	<!-- <update id="sampleDAO.updateSample">
+		<![CDATA[
+			UPDATE SAMPLE
+			SET ID=#id#
+				, NAME=#name#
+				, DESCRIPTION=#description#
+				, USE_YN=#useYn#
+			WHERE ID=#id#
+		]]>
+	</update>
+	
+	<delete id="sampleDAO.deleteSample">
+		<![CDATA[
+			DELETE FROM SAMPLE 
+			WHERE ID=#id#
+		]]>
+	</delete>
+    
+    <select id="sampleDAO.selectSample" resultMap="sample">
+        <![CDATA[
+            SELECT
+                ID, NAME, DESCRIPTION, USE_YN, REG_USER
+            FROM SAMPLE 
+            WHERE ID=#id#
+        ]]>
+    </select> -->
+</sqlMap>

@@ -3,29 +3,29 @@
 
 <sqlMap namespace="user">
 	<typeAlias  alias="userVO" type = "egovframework.model.user.UserVO"/>
-	<resultMap id="user" class="egovframework.model.user.UserVO">
-		<result property="userUid" column="USER_UID"/>
-		<result property="userID" column="USER_ID"/>
-		<result property="userPassword" column="USER_PASSWORD"/>
-		<result property="userName" column="USER_NAME"/>
-		<result property="userBirth" column="USER_BIRTH"/>
-		<result property="userBirthD" column="USER_BIRTHD"/>
-		<result property="userPhone" column="USER_PHONE"/>
-		<result property="userEmail" column="USER_EMAIL"/>	
-		<result property="userGender" column="USER_GENDER"/>
-		<result property="zipCode" column="ZIP_CODE"/>
-		<result property="userAddr" column="USER_ADDR"/>
-		<result property="userAddr2" column="USER_ADDR2"/>
-		<result property="userCheck" column="USER_CHECK"/>
-		<result property="userLevel" column="USER_LEVEL"/>
-		<result property="register_dt" column="REGISTER_DT"/>
-		<result property="register_ID" column="REGISTER_ID"/>
-		<result property="update_dt" column="UPDATE_DT"/>
-		<result property="update_ID" column="UPDATE_ID"/>
-		<result property="tmpField1" column="TMPFIELD1"/>
-		<result property="tmpField2" column="TMPFIELD2"/>
-		<result property="tmpField3" column="TMPFIELD3"/>
-	</resultMap>
+	<resultMap id="user" class="userVO">
+	   <result property="userUid" column="USER_UID"/>
+	   <result property="userID" column="USER_ID" />
+	   <result property="userPassword" column="USER_PASSWORD" />
+	   <result property="userName" column="USER_NAME" />
+	   <result property="userBirth" column="USER_BIRTH" />
+	   <result property="userBirthD" column="USER_BIRTHD" />
+	   <result property="userPhone" column="USER_PHONE" />
+	   <result property="userEmail" column="USER_EMAIL" />
+	   <result property="userGender" column="USER_GENDER" />
+	   <result property="zipCode" column="ZIP_CODE" />
+	   <result property="userAddr" column="USER_ADDR" />
+	   <result property="userAddr2" column="USER_ADDR2" />
+	   <result property="userCheck" column="USER_CHECK" />
+	   <result property="userLevel" column="USER_LEVEL" />
+	   <result property="register_dt" column="REGISTER_DT" />
+	   <result property="register_ID" column="REGISTER_ID" />
+	   <result property="update_dt" column="UPDATE_DT" />
+	   <result property="update_ID" column="UPDATE_ID" />
+	   <result property="tmpField1" column="TMPFIELD1" />
+	   <result property="tmpField2" column="TMPFIELD2" />
+	   <result property="tmpField3" column="TMPFIELD3" />
+	 </resultMap>
 
 	<!-- 회원가입 -->
 	<insert id="userDAO.insert" parameterClass="userVO">
@@ -85,6 +85,26 @@
                 COUNT(*)
             FROM EX_USER 
             WHERE USER_ID=#userID#
+        ]]>
+    </select>
+    
+    <!-- 아이디 중복체크  -->
+	<select id="userDAO.login" parameterClass="userVO" resultClass="java.lang.String">
+        <![CDATA[
+            SELECT
+                USER_UID
+            FROM EX_USER 
+            WHERE USER_ID=#userID# 
+            AND USER_PASSWORD=#userPassword#
+        ]]>
+    </select>
+    
+    <select id="userDAO.oneData" parameterClass="userVO" resultClass="userVO" resultMap="user">
+        <![CDATA[
+            SELECT
+                *
+            FROM EX_USER 
+            WHERE USER_UID=#userUid# 
         ]]>
     </select>
 	<!-- <update id="sampleDAO.updateSample">

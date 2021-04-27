@@ -44,6 +44,24 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 		return check;
 	}
 
+	@Override
+	public String login(UserVO userVO) throws Exception {
+		LOGGER.debug(userVO.toString());
+		String uid = userDao.login(userVO);
+		LOGGER.debug(userVO.toString());
+		
+		return uid;
+	}
+
+	@Override
+	public UserVO oneData(UserVO userVO) throws Exception {
+		LOGGER.debug(userVO.toString());
+		UserVO user = userDao.oneData(userVO);
+		System.out.println("------------------------------------------------------");
+		LOGGER.debug("oneData"+user.toString());
+		return user;
+	}
+
 
 
 }

@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/exercise/include/header.jsp"%>
 <main> <!-- Hero Area Start-->
+
 <div class="slider-area ">
 	<div class="single-slider slider-height2 d-flex align-items-center">
 		<div class="container">
@@ -35,15 +36,15 @@
 						<h3>
 							Welcome Back ! <br> Please Sign in now
 						</h3>
-						<form class="row contact_form" action="#" method="post"
+						<form class="row contact_form" action="/login/${mode}/action.do" method="post"
 							novalidate="novalidate">
 							<div class="col-md-12 form-group p_star">
-								<input type="text" class="form-control" id="name" name="name"
+								<input type="text" class="form-control" id="userID" name="userID"
 									value="" placeholder="Username">
 							</div>
 							<div class="col-md-12 form-group p_star">
-								<input type="password" class="form-control" id="password"
-									name="password" value="" placeholder="Password">
+								<input type="password" class="form-control" id="userPassword"
+									name="userPassword" value="" placeholder="Password">
 							</div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account d-flex align-items-center">

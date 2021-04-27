@@ -1,5 +1,6 @@
 package egovframework.web.user;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -63,7 +64,7 @@ public class UserController extends CommonController{
 			successMsgJson(model,"사용가능한 아이디 입니다.");
 
 		}
-
+		
 		return getJsonView();
 	}
 	
@@ -93,14 +94,15 @@ public class UserController extends CommonController{
 		}
 		
 		if("write".equals(mode)) {
-			System.out.println("2222222222222222222222222222222222222");
 			userVO.setUserUid(UUID.randomUUID().toString());
 			userVO.setUserEmail(userVO.getEmail()+"@"+userVO.getEmail2());
-			
+			userVO.setUserCheck("2");
+			userVO.setUserLevel("1");
+			userVO.setRegister_dt(new Date());
+			userVO.setRegister_ID(userVO.getUserID());
 			boolean successFlag = false;
 			
 			try {
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>>");
 				userService.insert(userVO);
 				successFlag = true;
 			}catch(Exception ex) {

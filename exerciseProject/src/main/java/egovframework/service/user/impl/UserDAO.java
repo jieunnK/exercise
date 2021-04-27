@@ -19,4 +19,12 @@ public class UserDAO extends EgovAbstractDAO{
 	public int idCheck(UserVO userVO) throws Exception {
 		return (int) select("userDAO.idCheck", userVO);
 	}
+	
+	public String login(UserVO userVO) throws Exception {
+		return (String) select("userDAO.login" , userVO);
+	}
+	
+	public UserVO oneData(UserVO userVO) throws Exception {
+		return (UserVO) select("userDAO.oneData",userVO);
+	}
 }

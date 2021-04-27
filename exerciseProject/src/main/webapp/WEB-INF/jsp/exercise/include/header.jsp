@@ -31,9 +31,9 @@
 <link rel="stylesheet" href="/assets/css/slick.css">
 <link rel="stylesheet" href="/assets/css/nice-select.css">
 <link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" />
+<script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
 
-<!-- <script src="/assets/jquery-ui.min.js"></script>
-<script src="/assets/jquery-3.3.1.min.js"></script> -->
 </head>
 <title>Insert title here</title>
 </head>
@@ -63,7 +63,7 @@
 					<div class="menu-wrapper">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="/index.jsp"><h1>About exercise</h1></a>
+							<a href="/main.do"><h1>About exercise</h1></a>
 						</div>
 						<!-- Main-menu -->
 						<div class="main-menu d-none d-lg-block">
@@ -74,7 +74,7 @@
 									<li class="hot"><a href="about.html">예약</a></li>
 									<li><a href="#">게시판</a>
 										<ul class="submenu">
-											<li><a href="shop.html"> 공지사항</a></li>
+											<li><a href="/notice/list.do"> 공지사항</a></li>
 											<li><a href="product_details.html"> 자유게시판</a></li>
 											<li><a href="product_details.html"> 문의</a></li>
 											<li><a href="product_details.html"> 자주묻는질문</a></li>
@@ -103,9 +103,20 @@
 									<div class="nav-search search-switch">
 										<span class="flaticon-search" style="font-size: 25px;"></span>
 									</div>
-								</li>
-								<li><a href="login.do"><span class="flaticon-user" style="font-size: 25px;"></span></a></li>
+								</li>			
 								<li><a href="cart.html"><span class="flaticon-shopping-cart" style="font-size: 25px;"></span></a></li>
+								<c:set var="userVO" value="${userVO}" />
+								<c:choose>
+								    <c:when test="${ !empty  userVO}">
+								      	<li><a href="/myPage.do"><span class="flaticon-user" style="font-size: 25px;"></span></a></li>
+										<li><a href="/login/logout/action.do" class="genric-btn danger circle">Logout</a></li>
+								    </c:when>
+								 
+								    <c:when test="${empty  userVO}">
+								        <li><a href="/login.do" class="genric-btn danger circle">Login</a></li>
+								    </c:when>		 
+								</c:choose>
+
 							</ul>
 						</div>
 					</div>

@@ -142,12 +142,15 @@ function emailChange(val){
 				<div class="col-lg-8">
 					<h3>회원가입 정보</h3>
 					<form:form commandName="userVO" name="userVO" class="row contact_form" action="/signUP/${mode}/action.do" method="post" novalidate="novalidate">
-						<c:if test="${mode eq 'update' }">
-							<form:hidden path="userUid" id="userUid" />
-						</c:if>
-						<c:if test="${mode eq 'write' }">
-							<input type="hidden" id="check" name = "check" value=""/>
-						</c:if>			
+						<c:set var="mode" value="${mode}" />
+						<c:choose>
+							<c:when test="${mode eq 'update' }">
+								<form:hidden path="userUid" id="userUid" />
+							</c:when>			 
+							<c:when test="${mode eq 'write' }">
+								<input type="hidden" id="check" name = "check" value=""/>
+							</c:when>		 
+						</c:choose>	
 													
 						<div class="col-md-9 form-group p_star">
 							<form:input path="userID" class="form-control" id="userID" placeholder="아이디"/>
@@ -240,14 +243,13 @@ function emailChange(val){
 					</form:form>
 					<div style="padding: 50px 30px 10px 60px;text-align: center;">
 						<c:if test="${mode eq 'write' }">
-							<a class="btn_3" href="javascript:window.history.back();" style="margin-right: 10px;">뒤로가기</a>					
-							<a class="btn_3" href="#" onclick="postForm(); return false;">회원가입</a>
+							<a class="genric-btn success-border large" href="javascript:window.history.back();" style="margin-right: 10px;">뒤로가기</a>					
+							<a class="genric-btn success large" href="#" onclick="postForm(); return false;">회원가입</a>
 						</c:if>					
 						<c:if test="${mode eq 'update' }">
-							<a class="btn_3" href="javascript:window.history.back();" style="margin-right: 10px;">뒤로가기</a>					
-							<a class="btn_3" href="#" onclick="postForm(); return false;">수정완료</a>
+							<a class="genric-btn success-border large" href="javascript:window.history.back();" style="margin-right: 10px;">뒤로가기</a>					
+							<a class="genric-btn success large" href="#" onclick="postForm(); return false;">수정완료</a>
 						</c:if>		
-						
 					</div>
 				</div>
 			</div>

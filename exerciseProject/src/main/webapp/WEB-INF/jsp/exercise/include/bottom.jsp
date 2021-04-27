@@ -106,12 +106,9 @@
 	</div>
 </div>
 <!-- Search model end -->
-
-<!-- JS here -->
-
 <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
 <!-- Jquery, Popper, Bootstrap -->
-<script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+
 <script src="/assets/js/popper.min.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
 <!-- Jquery Mobile Menu -->
@@ -141,5 +138,9 @@
 <!-- Jquery Plugins, main Jquery -->
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="/assets/js/jquery.ui.datepicker-ko.js"></script> 
+<script type="text/javascript" src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
 </body>
 </html>

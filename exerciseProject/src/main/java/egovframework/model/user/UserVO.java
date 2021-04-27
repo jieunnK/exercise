@@ -234,9 +234,10 @@ public class UserVO {
 		this.check = check;
 	}
 
-	public String getSimplerDt(Date today) {
+	public String getSimplerRegisterDt() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		return format.format(today);
+		
+		return register_dt != null ? format.format(register_dt) : "";	
 	}
 	
 	@Override

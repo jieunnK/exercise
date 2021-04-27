@@ -1,4 +1,4 @@
-package egovframework.common.controller;
+package egovframework.example.index;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,15 +14,10 @@ public class MainController {
 	@RequestMapping(value = "/main.do")
 	public String main(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		
-		return "exercise/common/main";
+		return "exercise/index/main";
 	}
 	
-	//로그인페이지 이동
-	@RequestMapping(value = "/login.do")
-	public String login(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		
-		return "exercise/common/login";
-	}
+	
 	
 	
 }

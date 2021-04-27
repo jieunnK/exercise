@@ -9,4 +9,7 @@ public interface UserService {
 	
 	int idCheck(UserVO userVO) throws Exception;
 	
+	String login(UserVO userVO) throws Exception;
+	
+	UserVO oneData(UserVO userVO) throws Exception;
 }
