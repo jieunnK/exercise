@@ -19,6 +19,35 @@
 		<div class="container">
 			<div class="section-top-border" >
 				<h3 class="mb-30">공지사항</h3>
+				<form acrion="/notice/list.do" method="post">
+					<div class="form-group">
+	                	<div class="input-group mb-3">
+	                    	<div class="default-select" id="default-select" "="">
+								<select name="searchType" style="display: none;" >
+									<option value="dataTitle" ${pageVO.searchType eq 'dataTitle' ? "selected='selected'" : ""}>제목</option>
+									<option value="dataContent" ${pageVO.searchType eq 'dataContent' ? "selected='selected'" : ""}>내용</option>
+									<option value="registerId" ${pageVO.searchType eq 'registerId' ? "selected='selected'" : ""}>작성자</option>
+								</select>
+								<div class="nice-select" tabindex="0">
+									<span class="current">
+										${pageVO.searchType eq 'dataTitle' ? "제목" : pageVO.searchType eq 'dataContent' ? "내용" : pageVO.searchType eq 'registerId' ? "작성자" : "검색옵션"}
+									</span>
+									<ul class="list">
+										<li data-value="dataTitle" ${pageVO.searchType eq 'dataTitle' ? "class='option focus selected'" : "class='option'"}}>제목</li>
+										<li data-value="dataContent" ${pageVO.searchType eq 'dataContent' ? "class='option focus selected'" : "class='option'"}>내용</li>
+										<li data-value="registerId" ${pageVO.searchType eq 'registerId' ? "class='option focus selected'" : "class='option'"}>작성자</li>
+									</ul>
+								</div>
+							</div>
+	                        <input type="text" class="form-control" name ="keyword" placeholder="Search Keyword" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'" style="margin-left: 10px;" value= "${pageVO.keyword}">
+	                        <div class="input-group-append">
+	                           	<button class="btns" type="submit" style="border-color: transparent;">
+	                           		<i class="ti-search"></i>
+	                           	</button>
+	                       </div>
+	                   </div>
+	                </div>
+                </form>
 				<div class="progress-table-wrap" style="overflow:hidden;">
 					<div class="progress-table">
 						<div class="table-head">
@@ -28,14 +57,22 @@
 							<div class="visit">작성일</div>
 							<div class="visit">조회수</div>
 						</div>
-						<div class="table-row">
-							<div class="serial">1</div>
-							<div class="percentage">ㅇㅇㅇㅇㅇ</div>
-							<div class="visit">홍길동</div>
-							<div class="visit">2021-09-02</div>
-							<div class="visit">1</div>
-						</div>	
-						</div>
+						<c:set var="rowNum" value="${pageVO.totalCount-(pageVO.page-1)*pageVO.rowCount }" />
+							<c:if test="${empty list}">
+								<div class="table-row">
+								</div>
+							</c:if>
+							<c:forEach var="row" items="${list}">
+							<div class="table-row">
+								<div class="serial">${rowNum}</div>
+								<div class="percentage">${row.dataTitle }</div>
+								<div class="visit">${row.registerId}</div>
+								<div class="visit">${row.simplerRegisterDt}</div>
+								<div class="visit">${row.viewCount }</div>
+							</div>
+							<c:set var="rowNum" value="${rowNum-1}" />	
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 			<hr/>
@@ -46,22 +83,7 @@
 			</c:if>			
 			<nav class="blog-pagination justify-content-center d-flex">
 	        	<ul class="pagination">
-	            	<li class="page-item">
-	                	<a href="#" class="page-link" aria-label="Previous">
-	                    	<i class="ti-angle-left"></i>
-	                   	</a>
-	                </li>
-	                <li class="page-item">
-	                   <a href="#" class="page-link">1</a>
-	                </li>
-	                <li class="page-item active">
-	                	<a href="#" class="page-link">2</a>
-	                </li>
-	                <li class="page-item">
-	                	<a href="#" class="page-link" aria-label="Next">
-	                		<i class="ti-angle-right"></i>
-	                	</a>
-	                </li>
+	        		${paging}         
 	            </ul>
 	        </nav>
 		</div>

@@ -28,6 +28,9 @@ public class PageVO {
 	private String etcParamStr="";
 	private String etcParam1="";
 	private String paramStr;
+	private int rowNum1 =1;
+	private int rowNum2 =1;
+	
 	
 	public String getSearchType() {
 		return searchType;
@@ -150,6 +153,24 @@ public class PageVO {
 	}
 	public void setSubPage(int subPage) {
 		this.subPage = subPage;
+	}
+	
+	public int getRowNum1() {
+		if(page == 1) {
+			rowNum1 = 0;
+		}
+		return rowNum1 * rowCount == 0 ? 1 : rowNum1 * rowCount;
+	}
+	public void setRowNum1(int rowNum1) {
+		this.rowNum1 = rowNum1;
+	}
+	public int getRowNum2() {
+		rowNum2 = rowNum1 == 1 ? rowNum1 * 10 : rowNum1 + 10;		
+		return rowNum2;
+	}
+	
+	public void setRowNum2(int rowNum2) {
+		this.rowNum2 = rowNum2;
 	}
 	//기본적인 검색어,키값 형식의 파라미터 반환
 	public String getSearchParam() throws UnsupportedEncodingException{

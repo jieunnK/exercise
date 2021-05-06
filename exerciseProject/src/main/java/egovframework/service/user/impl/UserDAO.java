@@ -16,14 +16,17 @@ public class UserDAO extends EgovAbstractDAO{
 		return (String) insert("userDAO.insert", vo);
 	}
 	
+	//중복체크
 	public int idCheck(UserVO userVO) throws Exception {
 		return (int) select("userDAO.idCheck", userVO);
 	}
 	
+	//로그인
 	public String login(UserVO userVO) throws Exception {
 		return (String) select("userDAO.login" , userVO);
 	}
 	
+	//로그인 데이터 정보
 	public UserVO oneData(UserVO userVO) throws Exception {
 		return (UserVO) select("userDAO.oneData",userVO);
 	}

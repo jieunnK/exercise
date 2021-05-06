@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import egovframework.common.controller.CommonController;
+import egovframework.common.util.PagingUtil;
 import egovframework.model.board.BoardVO;
 import egovframework.model.user.UserVO;
 import egovframework.service.board.BoardService;
@@ -39,9 +41,11 @@ public class BoardController extends CommonController{
 	
 	//공지사항 리스트 
 	@RequestMapping(value = "/{boardType}/list.do")
-	public String noticeList(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model) throws Exception {		
+	public String noticeList(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model,BoardVO pageVO) throws Exception {		
 		String returnUrl = "";
-				
+		
+		System.out.println(pageVO.getSearchType());
+		System.out.println(pageVO.getKeyword());
 		if("".equals(boardType) || boardType == null){
 			model.addAttribute("type","3");//back
 			model.addAttribute("message","잘못된 접근입니다.");
@@ -56,8 +60,19 @@ public class BoardController extends CommonController{
 		}
 		
 		
-		
+		long totalCount = 0;
 		if(boardType.equals("notice")) {
+			pageVO.setBoardType("1");
+			List<BoardVO> list = boardService.list(pageVO);
+			totalCount = boardService.totalCount(pageVO);
+			
+			pageVO.setTotalCount(totalCount);
+			
+			PagingUtil paging = new PagingUtil(totalCount,pageVO.getRowCount(),pageVO.getPage(),10,"/"+boardType+"/list.do",pageVO);
+				
+			model.addAttribute("list", list);
+			model.addAttribute("pageVO", pageVO);
+			model.addAttribute("paging", paging.getPaging());
 			return "exercise/board/noticeList";
 		}
 		

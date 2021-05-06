@@ -1,6 +1,5 @@
 package egovframework.service.user.impl;
 
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import egovframework.example.sample.service.impl.EgovSampleServiceImpl;
 import egovframework.model.user.UserVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.service.user.UserService;
 
 @Service("userService")
@@ -22,43 +20,33 @@ public class UserServiceImpl extends EgovAbstractServiceImpl implements UserServ
 	@Resource(name = "userDAO")
 	private UserDAO userDao;
 	
-	/** ID Generation */
-	@Resource(name = "egovIdGnrService")
-	private EgovIdGnrService egovIdGnrService;
-	
+	//회원가입
 	@Override
-	public String insert(UserVO userVO) throws Exception {
-		
+	public String insert(UserVO userVO) throws Exception {	
 		LOGGER.debug(userVO.toString());
-		String check = userDao.insert(userVO);
-		LOGGER.debug(userVO.toString());
-
-		return check;
+		return userDao.insert(userVO);
 	}
 
+	//중복체크
 	@Override
 	public int idCheck(UserVO userVO) throws Exception {
 		LOGGER.debug(userVO.toString());
-		int check = userDao.idCheck(userVO);
-		LOGGER.debug(userVO.toString());
-		return check;
+		return userDao.idCheck(userVO);
 	}
 
+	//로그인
 	@Override
 	public String login(UserVO userVO) throws Exception {
-		LOGGER.debug(userVO.toString());
-		String uid = userDao.login(userVO);
-		LOGGER.debug(userVO.toString());
-		
-		return uid;
+		LOGGER.debug(userVO.toString());	
+		return userDao.login(userVO);
 	}
 
+	//로그인 정보
 	@Override
 	public UserVO oneData(UserVO userVO) throws Exception {
 		LOGGER.debug(userVO.toString());
 		UserVO user = userDao.oneData(userVO);
-		System.out.println("------------------------------------------------------");
-		LOGGER.debug("oneData"+user.toString());
+		LOGGER.debug("oneData>>>>>>>>>>>>>>>>>>>>"+user.toString());
 		return user;
 	}
 

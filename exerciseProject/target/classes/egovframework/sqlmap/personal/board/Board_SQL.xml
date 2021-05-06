@@ -3,7 +3,31 @@
 
 <sqlMap namespace="board">
 	<typeAlias  alias="boardVO" type = "egovframework.model.board.BoardVO"/>
-	
+	<resultMap id="board" class="boardVO">
+		 <result property="boardUid" column="BOARD_UID"/>
+		 <result property="dataTitle" column="DATA_TITLE"/>
+		 <result property="dataContent" column="DATA_CONTENT"/>
+		 <result property="registerDt" column="REGISTER_DT"/>
+		 <result property="registerId" column="REGISTER_ID"/>
+		 <result property="updateDt" column="UPDATE_DT"/>
+		 <result property="updateId" column="UPDATE_ID"/>
+		 <result property="beginDate" column="BEGIN_DATE"/>
+		 <result property="endDate" column="END_DATE"/>
+		 <result property="dataSecret" column="DATA_SECRET"/>
+		 <result property="boardType" column="BOARD_TYPE"/>
+		 <result property="boardDivision" column="BOARD_DIVISION"/>
+		 <result property="dataDep" column="DATA_DEP"/>
+		 <result property="boardNumberfile" column="BOARD_NUMBERFILE"/>
+		 <result property="category1" column="CATEGORY1"/>
+		 <result property="category2" column="CATEGORY2"/>
+		 <result property="category3" column="CATEGORY3"/>
+		 <result property="tmpField1" column="TMPFIELD1"/>
+		 <result property="tmpField3" column="TMPFIELD2"/>
+		 <result property="tmpField3" column="TMPFIELD3"/>
+		 <result property="tmpField4" column="TMPFIELD4"/>
+		 <result property="tmpField5" column="TMPFIELD5"/>
+		 <result property="viewCount" column="VIEW_COUNT"/>
+	</resultMap>
 	<insert id="boardDAO.insert" parameterClass="boardVO">
 		<![CDATA[
 			INSERT INTO EX_BOARD 
@@ -57,8 +81,34 @@
 				 )
 		]]>
 	</insert>
+	<select id="boardDAO.list" parameterClass="boardVO" resultMap="board">
+		<![CDATA[
+		SELECT * FROM (
+			SELECT a.*, ROWNUM as rnum FROM (
+				SELECT 
+						* 
+				FROM EX_BOARD b
+				ORDER BY REGISTER_DT DESC
+		  )a
+		)  
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND 
+			rnum >= #rowNum1# AND rnum <= #rowNum2#
+		]]>
+			
+	</select>
+		
+	<select id="boardDAO.totalCount" parameterClass="boardVO" resultClass="java.lang.Long">
+		<![CDATA[
+		SELECT 
+			COUNT(*)
+		FROM EX_BOARD 
+		WHERE 
+			BOARD_TYPE = #boardType# 
+		]]>
+	</select>
 	
-
 	<!-- <update id="sampleDAO.updateSample">
 		<![CDATA[
 			UPDATE SAMPLE
