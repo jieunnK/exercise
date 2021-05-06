@@ -117,7 +117,7 @@ public class BoardController extends CommonController{
 			
 			return "exercise/board/noticewrite";
 		}
-		
+	
 		return returnUrl;
 	}
 	
