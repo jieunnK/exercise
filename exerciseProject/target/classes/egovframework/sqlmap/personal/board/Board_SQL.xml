@@ -27,7 +27,23 @@
 		 <result property="tmpField4" column="TMPFIELD4"/>
 		 <result property="tmpField5" column="TMPFIELD5"/>
 		 <result property="viewCount" column="VIEW_COUNT"/>
+		 <result property="viewCount" column="VIEW_COUNT"/>
 	</resultMap>
+	
+	<sql id="board.where">
+		<isNotEmpty property="keyword"><isNotEmpty property="searchType">
+			<isEqual prepend="AND" property="searchType" compareValue="dataTitle">
+				DATA_TITLE LIKE '%'|| #keyword# || '%'
+			</isEqual>
+			<isEqual prepend="AND" property="searchType" compareValue="dataContent">
+				DATA_CONTENT LIKE '%'|| #keyword# || '%'
+			</isEqual>
+			<isEqual prepend="AND" property="searchType" compareValue="registerId">
+				REGISTER_ID LIKE '%'|| #keyword# || '%'
+			</isEqual>
+		</isNotEmpty></isNotEmpty>
+	</sql>
+	
 	<insert id="boardDAO.insert" parameterClass="boardVO">
 		<![CDATA[
 			INSERT INTO EX_BOARD 
@@ -94,9 +110,11 @@
 		WHERE 
 			BOARD_TYPE = #boardType# 
 			AND 
-			rnum >= #rowNum1# AND rnum <= #rowNum2#
+			rnum >= #rowNum1# AND rnum <= #rowNum2# 
 		]]>
-			
+	
+		<include refid="board.where" />
+
 	</select>
 		
 	<select id="boardDAO.totalCount" parameterClass="boardVO" resultClass="java.lang.Long">
@@ -105,10 +123,59 @@
 			COUNT(*)
 		FROM EX_BOARD 
 		WHERE 
+			BOARD_TYPE = #boardType#
+		]]>
+		<include refid="board.where" />
+	</select>
+	
+	<select id="boardDAO.getData" parameterClass="boardVO" resultMap="board">
+		<![CDATA[
+		SELECT 
+			*
+		FROM EX_BOARD 
+		WHERE 
 			BOARD_TYPE = #boardType# 
+			AND
+			BOARD_UID = #boardUid#
 		]]>
 	</select>
 	
+	<update id="boardDAO.updateViewCount">
+		UPDATE EX_BOARD
+		SET
+			VIEW_COUNT = VIEW_COUNT+1
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND
+			BOARD_UID = #boardUid#
+	</update>
+	
+	<update id="boardDAO.updateData">
+		UPDATE EX_BOARD
+		SET DATA_TITLE =  #dataTitle#
+			, DATA_CONTENT = #dataContent#
+			, UPDATE_ID = #updateDt#
+			, UPDATE_DT = #updateId#
+			, BEGIN_DATE = #beginDate#
+			, END_DATE = #endDate#
+			, DATA_SECRET = #dataSecret#
+			, BOARD_TYPE = #boardType#
+			, BOARD_DIVISION = #boardDivision#
+			, DATA_DEP = #dataDep#
+			, BOARD_NUMBERFILE = #boardNumberfile#
+			, CATEGORY1 = #category1# 
+			, CATEGORY2 = #category2# 
+			, CATEGORY3 = #category3#
+			, TMPFIELD1 = #tmpField1# 
+			, TMPFIELD2 = #tmpField2# 
+			, TMPFIELD3 = #tmpField3# 
+			, TMPFIELD4 = #tmpField4# 
+			, TMPFIELD5 = #tmpField5# 
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND
+			BOARD_UID = #boardUid#	
+	</update>
 	<!-- <update id="sampleDAO.updateSample">
 		<![CDATA[
 			UPDATE SAMPLE

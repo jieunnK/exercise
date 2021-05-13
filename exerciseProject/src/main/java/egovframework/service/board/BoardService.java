@@ -14,4 +14,14 @@ public interface BoardService {
 	
 	//총 개수
 	long totalCount(BoardVO boardVO) throws Exception;
+	
+	//게시물 정보
+	BoardVO getData(BoardVO boardVO) throws Exception;
+	
+	//조회수 증가
+	int updateViewCount(BoardVO boardVO) throws Exception;
+	
+	//게시물 수정
+	int updateData(BoardVO boardVO) throws Exception;
+	
 }

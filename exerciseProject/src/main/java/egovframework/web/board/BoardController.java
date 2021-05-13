@@ -39,17 +39,15 @@ public class BoardController extends CommonController{
 	@Resource(name="userService")
 	private UserService userService;
 	
-	//공지사항 리스트 
+	//리스트 
 	@RequestMapping(value = "/{boardType}/list.do")
-	public String noticeList(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model,BoardVO pageVO) throws Exception {		
+	public String list(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model,BoardVO pageVO) throws Exception {		
 		String returnUrl = "";
 		
-		System.out.println(pageVO.getSearchType());
-		System.out.println(pageVO.getKeyword());
 		if("".equals(boardType) || boardType == null){
 			model.addAttribute("type","3");//back
 			model.addAttribute("message","잘못된 접근입니다.");
-			return "/exercise/common/result";
+			return "exercise/common/result";
 		}
 		
 		UserVO userVO = null;
@@ -58,8 +56,7 @@ public class BoardController extends CommonController{
 			userVO = (UserVO) session.getAttribute("userVO");
 			model.addAttribute("userVO",userVO);
 		}
-		
-		
+
 		long totalCount = 0;
 		if(boardType.equals("notice")) {
 			pageVO.setBoardType("1");
@@ -79,15 +76,15 @@ public class BoardController extends CommonController{
 		return returnUrl;
 	}
 	
-	//공지사항 리스트 
+	//글쓰기 
 	@RequestMapping(value = "/{boardType}/write.do")
-	public String noticewrite(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model,BoardVO boardVO) throws Exception {		
+	public String write(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType, ModelMap model,BoardVO boardVO) throws Exception {		
 		String returnUrl = "";
 		
 		if("".equals(boardType) || boardType == null){
 			model.addAttribute("type","3");//back
 			model.addAttribute("message","잘못된 접근입니다.");
-			return "/exercise/common/result";
+			return "exercise/common/result";
 		}
 		
 		UserVO userVO = null;
@@ -97,15 +94,16 @@ public class BoardController extends CommonController{
 		}
 		
 		if(userVO == null) {
-			model.addAttribute("type","3");//back
-			model.addAttribute("message","잘못된 접근입니다.");
-			return "/exercise/common/result";
+			model.addAttribute("type","2");
+			model.addAttribute("message","로그인 후 이용가능합니다.");
+			model.addAttribute("url","/"+boardType+"/write.do");
+			return "exercise/common/result";
 		}
 
 		if(Integer.parseInt(userVO.getUserLevel()) <=3) {
 			model.addAttribute("type","3");//back
 			model.addAttribute("message","잘못된 접근입니다.");
-			return "/exercise/common/result";
+			return "exercise/common/result";
 		}
 		
 		
@@ -121,6 +119,121 @@ public class BoardController extends CommonController{
 		return returnUrl;
 	}
 	
+	//수정
+	@RequestMapping(value="/{boardType}/{boardUid}/update.do")
+	public String update(HttpServletRequest request,HttpServletResponse response,ModelMap model,@PathVariable String boardType,@PathVariable String boardUid,BoardVO pageVO) throws Exception {
+		String returnUrl = "";
+		
+		if("".equals(boardType) || boardType == null){
+			model.addAttribute("type","3");//back
+			model.addAttribute("message","잘못된 접근입니다.");
+			return "exercise/common/result";
+		}
+		
+		UserVO userVO = null;
+		HttpSession session  = request.getSession(true);
+		if (session != null && session.getAttribute("userVO") != null) {
+			userVO = (UserVO) session.getAttribute("userVO");
+		}
+		
+		if(userVO == null) {
+			model.addAttribute("type","2");
+			model.addAttribute("message","로그인 후 이용가능합니다.");
+			model.addAttribute("url","/login.do?returnUrl=/"+boardType+"/"+boardUid+"/update.do");
+			return "exercise/common/result";
+		}
+		
+		BoardVO boardVO = new BoardVO();
+		
+		if(boardType.equals("notice")) {
+			pageVO.setBoardType("1");
+			
+			returnUrl = "exercise/board/noticewrite";
+		}
+		
+		pageVO.setBoardUid(boardUid);
+		try {
+			boardVO = boardService.getData(pageVO);
+			
+			if(boardVO.getBeginDate() != null && boardVO.getEndDate() != null) {
+				boardVO.setBeginDateStr(boardVO.getSimpleBeginDt());
+				boardVO.setEndDateStr(boardVO.getSimpleEndDt());
+			}
+		}catch(Exception e){
+			LOGGER.error("===========board update error");
+			e.printStackTrace();
+			
+			model.addAttribute("type","3");//back
+			model.addAttribute("message","에러 발생.");
+			return "exercise/common/result";
+		}
+		
+		
+		if((Integer.parseInt(userVO.getUserLevel()) <=3) || (!userVO.getUserID().equals(boardVO.getRegisterId()))) {
+			model.addAttribute("type","2");//back
+			model.addAttribute("message","본인이 작성한 글만 수정이 가능합니다.");
+			model.addAttribute("url","/"+boardType+"/"+boardUid+"/view.do");
+			return "exercise/common/result";
+		}
+			
+		model.addAttribute("mode", "update");
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("dataVO",boardVO);
+		
+		return returnUrl;
+	}
+	@RequestMapping("/{boardType}/{boardUid}/view.do")
+	public String view(HttpServletRequest request, HttpServletResponse response,@PathVariable String boardType,@PathVariable String boardUid, ModelMap model,BoardVO pageVO) {
+		String returnUrl = "";
+		
+		if(("".equals(boardType) || boardType == null) || ("".equals(boardUid) || boardUid == null)){
+			model.addAttribute("type","3");//back
+			model.addAttribute("message","잘못된 접근입니다.");
+			return "exercise/common/result";
+		}
+		
+		UserVO userVO = null;
+		HttpSession session  = request.getSession(true);
+		if (session != null && session.getAttribute("userVO") != null) {
+			userVO = (UserVO) session.getAttribute("userVO");
+			model.addAttribute("userVO",userVO);
+		}
+		
+		if(boardType.equals("notice")) {
+			pageVO.setBoardType("1");
+			pageVO.setBoardUid(boardUid);
+			
+			try {
+				boardService.updateViewCount(pageVO);
+				BoardVO boardVO = boardService.getData(pageVO);
+				
+				if(boardVO == null) {
+					model.addAttribute("type","3");//back
+					model.addAttribute("message","조회된 정보가 없습니다.");
+					return "/exercise/common/result";
+				}else {
+					model.addAttribute("pageVO", pageVO);
+					model.addAttribute("boardVO", boardVO);
+					
+					return "exercise/board/noticeView";
+				}
+				
+			} catch (Exception e) {
+				LOGGER.error("===========board view error");
+				e.printStackTrace();
+				
+				model.addAttribute("type","3");//back
+				model.addAttribute("message","에러 발생.");
+				return "exercise/common/result";
+			}
+			
+			
+			
+		}
+		return returnUrl;
+	}
+	
+	//처리(등록,수정,삭제)
 	@RequestMapping(value = "/{boardType}/{mode}/action.do", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public String action(HttpServletRequest request,@Valid ModelMap model,@PathVariable String boardType,@PathVariable String mode,BoardVO boardVO) throws Exception {		
 		if((!"write".equals(mode) && !"update".equals(mode) && !"delete".equals(mode)) ||("".equals(boardType) || boardType == null)){
@@ -128,6 +241,15 @@ public class BoardController extends CommonController{
 			return getJsonView();
 		}
 		
+		UserVO userVO = null;
+		boolean successFlag = false;
+		HttpSession session  = request.getSession(true);
+		if (session != null && session.getAttribute("userVO") != null) {
+			userVO = (UserVO) session.getAttribute("userVO");
+		}else {
+			failedMsgUrlJson(model, "로그인 후 이용 가능합니다.","/login.do");
+			return getJsonView();
+		}
 		
 		//입력데이터 체크
 		if("write".equals(mode) || "update".equals(mode)){
@@ -144,20 +266,11 @@ public class BoardController extends CommonController{
 				return getJsonView();
 			}
 			
-			if("write".equals(mode)) {
+			if("write".equals(mode)) {		
 				if("notice".equals(boardType)) {
 					boardVO.setBoardUid(UUID.randomUUID().toString());
 					boardVO.setBoardType("1"); //공지사항
-					
-					UserVO userVO = null;
-					HttpSession session  = request.getSession(true);
-					if (session != null && session.getAttribute("userVO") != null) {
-						userVO = (UserVO) session.getAttribute("userVO");
-					}else {
-						failedMsgUrlJson(model, "로그인 후 이용 가능합니다.","/login.do");
-						return getJsonView();
-					}
-					
+							
 					boardVO.setRegisterId(userVO.getUserID());
 					boardVO.setRegisterDt(new Date());
 					if(boardVO.getBeginDateStr() != null && !boardVO.getBeginDateStr().equals("") && boardVO.getEndDateStr() != null && !boardVO.getEndDateStr().equals("")) {
@@ -170,24 +283,52 @@ public class BoardController extends CommonController{
 					    	e.printStackTrace();
 					    }
 					}
-					
-					boolean successFlag = false;
-					
-					try {
-						boardService.insert(boardVO);
-						successFlag = true;
-					}catch(Exception ex) {
-						LOGGER.error("===========resell action write error");
-						ex.printStackTrace();
-					}
-					
-					if(successFlag){
-						successMsgUrlJson(model,"등록처리 되었습니다.","/"+boardType+"/list.do");
-					}else {
-						failedMsgJson(model, "등록처리에 실패하였습니다.\r\n다시 확인해주시기 바랍니다.");
-					}
-					
+
+							
 				}
+				
+				try {
+					boardService.insert(boardVO);
+					successFlag = true;
+				}catch(Exception ex) {
+					LOGGER.error("===========board action write error");
+					ex.printStackTrace();
+				}
+				
+				if(successFlag){
+					successMsgUrlJson(model,"등록처리 되었습니다.","/"+boardType+"/list.do");
+				}else {
+					failedMsgJson(model, "등록처리에 실패하였습니다.\r\n다시 확인해주시기 바랍니다.");
+				}
+			}else if("update".equals(mode)) {
+				if("notice".equals(boardType)) {
+					boardVO.setUpdateId(userVO.getUserID());
+					boardVO.setUpdateDt(new Date());
+					if(boardVO.getBeginDateStr() != null && !boardVO.getBeginDateStr().equals("") && boardVO.getEndDateStr() != null && !boardVO.getEndDateStr().equals("")) {
+						try {
+					        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					        boardVO.setBeginDate(format.parse(boardVO.getBeginDateStr()+" 00:00:00"));
+					        boardVO.setEndDate(format.parse(boardVO.getEndDateStr()+" 23:59:59"));
+					        
+					    } catch (Exception e) {
+					    	e.printStackTrace();
+					    }
+					}
+				}
+				try {
+					boardService.updateData(boardVO);
+					successFlag = true;
+				}catch(Exception ex) {
+					LOGGER.error("===========board action update error");
+					ex.printStackTrace();
+				}
+				
+				if(successFlag){
+					successMsgUrlJson(model,"수정완료 되었습니다.","/"+boardType+"/list.do");
+				}else {
+					failedMsgJson(model, "수정처리에 실패하였습니다.\r\n다시 확인해주시기 바랍니다.");
+				}
+				
 			}
 		}
 		

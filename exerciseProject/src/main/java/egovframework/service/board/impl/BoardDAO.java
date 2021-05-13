@@ -23,4 +23,16 @@ public class BoardDAO extends EgovAbstractDAO{
 	public long totalCount(BoardVO boardVO) throws Exception{
 		return (long) select("boardDAO.totalCount", boardVO);
 	}
+	
+	public BoardVO getData(BoardVO boardVO) throws Exception{
+		return (BoardVO) select("boardDAO.getData", boardVO);
+	}
+	
+	public int updateViewCount(BoardVO boardVO) throws Exception{
+		return (int) update("boardDAO.updateViewCount", boardVO);
+	}
+	
+	public int updateData(BoardVO boardVO) throws Exception{
+		return (int) update("boardDAO.updateData",boardVO);
+	}
 }

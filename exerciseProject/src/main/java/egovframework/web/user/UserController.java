@@ -106,7 +106,7 @@ public class UserController extends CommonController{
 				userService.insert(userVO);
 				successFlag = true;
 			}catch(Exception ex) {
-				LOGGER.error("===========resell action write error");
+				LOGGER.error("===========user action write error");
 				ex.printStackTrace();
 			}
 			

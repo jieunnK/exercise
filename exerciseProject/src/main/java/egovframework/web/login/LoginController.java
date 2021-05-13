@@ -37,6 +37,10 @@ public class LoginController extends CommonController{
 			return "exercise/index/main";
 		}
 		
+		String returnUrl = request.getParameter("returnUrl") != null ? request.getParameter("returnUrl") : "";
+		if(!returnUrl.equals("")) {
+			model.addAttribute("returnUrl", returnUrl);
+		}
 		model.addAttribute("mode", "login");
 		
 		return "exercise/login/login";
@@ -44,12 +48,12 @@ public class LoginController extends CommonController{
 	
 	@RequestMapping(value = "/login/{mode}/action.do")
 	public String action(HttpServletRequest request, HttpServletResponse response, ModelMap model,@PathVariable String mode,UserVO userVO) throws Exception {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>"+mode);
 		
 		String loginId = userVO.getUserID();
 		String password = userVO.getUserPassword();
+		String returnUrl = request.getParameter("returnUrl") != null && !request.getParameter("returnUrl").equals("") ? request.getParameter("returnUrl") : "";
 		
-		String viewPath = "/exercise/common/result";//액션 결과 처리페이지
+		String viewPath = "exercise/common/result";//액션 결과 처리페이지
 		model.addAttribute("type","2");
 		
 		if(!"login".equals(mode) && !"logout".equals(mode)){
@@ -57,6 +61,7 @@ public class LoginController extends CommonController{
 			model.addAttribute("message","잘못된 접근입니다.");	
 			return viewPath;
 		}	
+		
 		
 		
 		if("login".equals(mode)) {
@@ -68,11 +73,16 @@ public class LoginController extends CommonController{
 			}
 			
 			String userUid = userService.login(userVO);
-			
-			
+					
 			if(userUid != null) {
 				model.addAttribute("type", "6");
-				model.addAttribute("url", "/main.do");
+				
+				if(!returnUrl.equals("")) {
+					model.addAttribute("url", returnUrl);
+				}else {
+					model.addAttribute("url", "/main.do");
+				}
+				
 						
 				LOGGER.info("User LOGIN ============================ "+userVO.getUserID());
 				userVO.setUserUid(userUid);

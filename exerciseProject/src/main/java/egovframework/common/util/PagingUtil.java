@@ -113,7 +113,7 @@ public class PagingUtil {
 			paging += "</li>";
 			
 			paging += "<li class=\"page-item\">\r\n";
-			paging += "<a href=\"{LINK}?page=\""+pageIndex+"\"{PARAM}\" class=\"page-link\" aria-label=\"Previous\">\r\n";
+			paging += "<a href=\"{LINK}?page=\""+pageIndex+"{PARAM}\" class=\"page-link\" aria-label=\"Previous\">\r\n";
 			paging += "<i class=\"ti-angle-left\"></i>\r\n";
 			paging += "</a>\r\n"; 
 			paging += "</li>";
@@ -124,7 +124,7 @@ public class PagingUtil {
 			q = startBlockPage + p;				
 			String active = pageIndex== q ? "active" : "";
 			paging += "<li class=\"page-item "+active+"\">\r\n";
-			paging += "<a href=\"{LINK}?page="+q+"\"{PARAM}\" class=\"page-link\">"+q+"</a>\r\n"; 
+			paging += "<a href=\"{LINK}?page="+q+"{PARAM}\" class=\"page-link\">"+q+"</a>\r\n"; 
 			paging += "</li>";
 		}
 		
@@ -132,7 +132,7 @@ public class PagingUtil {
 			
 			int nextPage = pageIndex +1 == totalPage || pageIndex + 1 > totalPage ? totalPage : pageIndex + 1;
 			paging += "<li class=\"page-item\">\r\n";
-			paging += "<a href=\"{LINK}?page="+nextPage+"\"{PARAM}\" class=\"page-link\" aria-label=\"Next\">\r\n";
+			paging += "<a href=\"{LINK}?page="+nextPage+"{PARAM}\" class=\"page-link\" aria-label=\"Next\">\r\n";
 			paging += "<i class=\"ti-angle-right\"></i>\r\n";
 			paging += "</a>\r\n"; 
 			paging += "</li>";

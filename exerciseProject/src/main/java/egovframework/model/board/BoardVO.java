@@ -33,6 +33,9 @@ public class BoardVO extends PageVO{
 	int viewCount = 0;
 	String beginDateStr;
 	String endDateStr;
+	String simpleRegisterDt;
+	String simpleBeginDt;
+	String simpleEndDt;
 	
 	public String getBoardUid() {
 		return boardUid;
@@ -186,17 +189,18 @@ public class BoardVO extends PageVO{
 	public void setEndDateStr(String endDateStr) {
 		this.endDateStr = endDateStr;
 	}
-	public String getSimplerRegisterDt() {
+	
+	public String getSimpleRegisterDt() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return registerDt != null ? format.format(registerDt) : "";	
 	}
 	
-	public String getSimplerBeginDt() {
+	public String getSimpleBeginDt() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return beginDate != null ? format.format(beginDate) : "";	
 	}
 	
-	public String getSimplerEndDt() {
+	public String getSimpleEndDt() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return endDate != null ? format.format(endDate) : "";	
 	}

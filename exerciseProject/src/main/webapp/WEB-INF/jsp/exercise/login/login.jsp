@@ -38,6 +38,7 @@
 						</h3>
 						<form class="row contact_form" action="/login/${mode}/action.do" method="post"
 							novalidate="novalidate">
+							<input type="hidden" name="returnUrl" value="${returnUrl }"/>
 							<div class="col-md-12 form-group p_star">
 								<input type="text" class="form-control" id="userID" name="userID"
 									value="" placeholder="Username">

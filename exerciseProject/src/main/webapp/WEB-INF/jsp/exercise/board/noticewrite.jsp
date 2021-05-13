@@ -20,6 +20,10 @@
 		<div class="col-lg-15 col-md-15">
 			<h3 class="mb-30">공지사항</h3>
 			<form:form commandName="dataVO" name="dataVO" action="/notice/${mode}/action.do" method="post" novalidate="novalidate">
+				<c:if test="${mode eq 'update' }">
+					<form:hidden path="boardUid" id="boardUid" />
+				</c:if>
+				
 				<div class="col-md-2 form-group p_star">
 					<label for="dataTtle">제목</label>
 				</div>
@@ -47,7 +51,7 @@
 					</div>
 				</div>
 				<div class="col-md-5 form-group p_star"></div>
-				<div id="noticeDivision" style="display: none;">
+				<div id="noticeDivision" ${mode eq 'update' && !empty dataVO.beginDate && !empty dataVO.endDate ? "" : "style='display: none;'"} >
 					<div class="col-md-2 form-group p_star">
 						<label for="dataTtle">기간설정</label>
 					</div>
@@ -78,15 +82,15 @@
 			<div style="padding: 50px 30px 10px 60px; text-align: center;">
 				<c:if test="${mode eq 'write' }">
 					<a class="genric-btn danger-border radius"
-						href="javascript:window.history.back();"
-						style="margin-right: 10px;">뒤로가기</a>
+						href="/notice/list.do?${pageVO.pagingParam}"
+						style="margin-right: 10px;">목록</a>
 					<a class="genric-btn danger radius" href="#"
 						onclick="postForm(); return false;">등록</a>
 				</c:if>
 				<c:if test="${mode eq 'update' }">
 					<a class="genric-btn danger-border radius"
-						href="javascript:window.history.back();"
-						style="margin-right: 10px;">뒤로가기</a>
+						href="/notice/list.do?${pageVO.pagingParam}"
+						style="margin-right: 10px;">목록</a>
 					<a class="genric-btn danger radiuse" href="#"
 						onclick="postForm(); return false;">수정</a>
 				</c:if>

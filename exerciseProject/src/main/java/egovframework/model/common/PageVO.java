@@ -175,6 +175,7 @@ public class PageVO {
 	//기본적인 검색어,키값 형식의 파라미터 반환
 	public String getSearchParam() throws UnsupportedEncodingException{
 		String paramStr = "";
+	
 		if(keyword!=null && !"".equals(keyword) && searchType!=null && !"".equals(searchType)){
 			paramStr += "&searchType="+searchType+"&keyword="+URLEncoder.encode(keyword,"UTF-8");
 		}
@@ -211,6 +212,7 @@ public class PageVO {
 		if(dateType!=null && !"".equals(dateType)){
 			paramStr += "&dateType="+dateType;
 		}
+
 		return paramStr+etcParamStr;
 	}
 	//페이지번호 포함된 파라미터 반환 앞은 공백처리 ?,& 상황에 따라 임의로 적용

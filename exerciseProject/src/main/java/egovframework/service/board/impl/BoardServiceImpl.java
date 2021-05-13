@@ -42,4 +42,23 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 		return boardDAO.totalCount(boardVO);
 	}
 
+	//게시물 정보
+	@Override
+	public BoardVO getData(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());
+		return boardDAO.getData(boardVO);
+	}
+
+	@Override
+	public int updateViewCount(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());		
+		return boardDAO.updateViewCount(boardVO);
+	}
+
+	@Override
+	public int updateData(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());
+		return boardDAO.updateData(boardVO);
+	}
+
 }
