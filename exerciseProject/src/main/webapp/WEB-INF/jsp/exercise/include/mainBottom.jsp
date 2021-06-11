@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-		</div>
-	</section>
-</main>
-<footer>
 	<!-- Footer Start-->
 	<div class="footer-area footer-padding">
 		<div class="container">

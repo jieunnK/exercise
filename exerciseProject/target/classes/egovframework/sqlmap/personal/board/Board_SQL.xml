@@ -27,7 +27,9 @@
 		 <result property="tmpField4" column="TMPFIELD4"/>
 		 <result property="tmpField5" column="TMPFIELD5"/>
 		 <result property="viewCount" column="VIEW_COUNT"/>
-		 <result property="viewCount" column="VIEW_COUNT"/>
+		 <result property="userNicName" column="USER_NICNAME"/>
+		 <result property="userPassword" column="USER_PASSWORD"/>
+		 <result property="idxTmp" column="IDX_TMP"/>
 	</resultMap>
 	
 	<sql id="board.where">
@@ -42,6 +44,12 @@
 				REGISTER_ID LIKE '%'|| #keyword# || '%'
 			</isEqual>
 		</isNotEmpty></isNotEmpty>
+	</sql>
+	
+	<sql id="board.passWord">
+		<isNotEmpty property="userPassword">
+			AND USER_PASSWORD = #userPassword#
+		</isNotEmpty>
 	</sql>
 	
 	<insert id="boardDAO.insert" parameterClass="boardVO">
@@ -69,7 +77,11 @@
 				  , TMPFIELD3
 				  , TMPFIELD4
 				  , TMPFIELD5
-				  , VIEW_COUNT )
+				  , VIEW_COUNT 
+				  , USER_NICNAME
+				  , USER_PASSWORD
+				  , IDX_TMP
+				  )
 			VALUES (
 				  #boardUid#
 				  , #dataTitle#
@@ -93,7 +105,10 @@
 				  , #tmpField3# 
 				  , #tmpField4#
 				  , #tmpField5#
-				  , #viewCount# 
+				  , #viewCount#
+				  , #userNicName#
+				  , #userPassword#
+				  , tmp_seq.NEXTVAL
 				 )
 		]]>
 	</insert>
@@ -111,6 +126,8 @@
 			BOARD_TYPE = #boardType# 
 			AND 
 			rnum >= #rowNum1# AND rnum <= #rowNum2# 
+			AND
+			DATA_DEP IS NULL
 		]]>
 	
 		<include refid="board.where" />
@@ -124,12 +141,14 @@
 		FROM EX_BOARD 
 		WHERE 
 			BOARD_TYPE = #boardType#
+			AND
+			DATA_DEP IS NULL
 		]]>
 		<include refid="board.where" />
 	</select>
 	
 	<select id="boardDAO.getData" parameterClass="boardVO" resultMap="board">
-		<![CDATA[
+	
 		SELECT 
 			*
 		FROM EX_BOARD 
@@ -137,7 +156,28 @@
 			BOARD_TYPE = #boardType# 
 			AND
 			BOARD_UID = #boardUid#
-		]]>
+	</select>
+	
+	<select id="boardDAO.passCount" parameterClass="boardVO" resultClass="java.lang.Integer">
+		SELECT 
+			COUNT(*) 
+		FROM EX_BOARD 
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND
+			BOARD_UID = #boardUid#
+		
+		<include refid="board.passWord" />
+	</select>
+	
+	<select id="boardDAO.reply" parameterClass="boardVO" resultMap="board">
+		SELECT 
+			* 
+		FROM EX_BOARD 
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND
+			DATA_DEP = #idxTmp#
 	</select>
 	
 	<update id="boardDAO.updateViewCount">
@@ -154,12 +194,11 @@
 		UPDATE EX_BOARD
 		SET DATA_TITLE =  #dataTitle#
 			, DATA_CONTENT = #dataContent#
-			, UPDATE_ID = #updateDt#
-			, UPDATE_DT = #updateId#
+			, UPDATE_ID = #updateId#
+			, UPDATE_DT = #updateDt#
 			, BEGIN_DATE = #beginDate#
 			, END_DATE = #endDate#
 			, DATA_SECRET = #dataSecret#
-			, BOARD_TYPE = #boardType#
 			, BOARD_DIVISION = #boardDivision#
 			, DATA_DEP = #dataDep#
 			, BOARD_NUMBERFILE = #boardNumberfile#
@@ -170,12 +209,24 @@
 			, TMPFIELD2 = #tmpField2# 
 			, TMPFIELD3 = #tmpField3# 
 			, TMPFIELD4 = #tmpField4# 
-			, TMPFIELD5 = #tmpField5# 
+			, TMPFIELD5 = #tmpField5#
+			, USER_NICNAME = #userNicName#
 		WHERE 
 			BOARD_TYPE = #boardType# 
 			AND
-			BOARD_UID = #boardUid#	
+			BOARD_UID = #boardUid#
+			
+			<include refid="board.where" />
 	</update>
+	
+	<delete id="boardDAO.deleteData">
+		DELETE FROM EX_BOARD 
+		WHERE 
+			BOARD_TYPE = #boardType# 
+			AND
+			BOARD_UID = #boardUid#
+	</delete>
+	
 	<!-- <update id="sampleDAO.updateSample">
 		<![CDATA[
 			UPDATE SAMPLE

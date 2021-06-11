@@ -48,7 +48,14 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 		LOGGER.debug(boardVO.toString());
 		return boardDAO.getData(boardVO);
 	}
-
+	
+	//비밀번호 확인
+	@Override
+	public int passCount(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());
+		return boardDAO.passCount(boardVO);
+	}
+	
 	@Override
 	public int updateViewCount(BoardVO boardVO) throws Exception {
 		LOGGER.debug(boardVO.toString());		
@@ -60,5 +67,19 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 		LOGGER.debug(boardVO.toString());
 		return boardDAO.updateData(boardVO);
 	}
+
+	@Override
+	public int deleteData(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());
+		return boardDAO.deleteData(boardVO);
+	}
+
+	@Override
+	public BoardVO replyData(BoardVO boardVO) throws Exception {
+		LOGGER.debug(boardVO.toString());
+		return boardDAO.replyData(boardVO);
+	}
+
+	
 
 }

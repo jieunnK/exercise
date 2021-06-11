@@ -36,7 +36,35 @@ public class BoardVO extends PageVO{
 	String simpleRegisterDt;
 	String simpleBeginDt;
 	String simpleEndDt;
+	String userNicName;
+	String userPassword;
+	int idxTmp = 0;
+	String seacretPassword;
 	
+	public String getSeacretPassword() {
+		return seacretPassword;
+	}
+	public void setSeacretPassword(String seacretPassword) {
+		this.seacretPassword = seacretPassword;
+	}
+	public int getIdxTmp() {
+		return idxTmp;
+	}
+	public void setIdxTmp(int idxTmp) {
+		this.idxTmp = idxTmp;
+	}
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+	public String getUserNicName() {
+		return userNicName;
+	}
+	public void setUserNicName(String userNicName) {
+		this.userNicName = userNicName;
+	}
 	public String getBoardUid() {
 		return boardUid;
 	}

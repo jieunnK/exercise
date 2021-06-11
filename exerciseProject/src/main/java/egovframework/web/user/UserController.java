@@ -39,7 +39,7 @@ public class UserController extends CommonController{
 	public String write(HttpServletRequest request, HttpServletResponse response, ModelMap model, UserVO userVO) throws Exception {
 		model.addAttribute("mode", "write");
 		model.addAttribute("userVO", userVO);		
-		
+		model.addAttribute("title", "회원가입");
 		return "exercise/user/signUp";
 	}
 	

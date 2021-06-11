@@ -28,11 +28,24 @@ public class BoardDAO extends EgovAbstractDAO{
 		return (BoardVO) select("boardDAO.getData", boardVO);
 	}
 	
+	public int passCount(BoardVO boardVO) throws Exception{
+		return (int) select("boardDAO.passCount", boardVO);
+	}
+	
 	public int updateViewCount(BoardVO boardVO) throws Exception{
 		return (int) update("boardDAO.updateViewCount", boardVO);
 	}
 	
 	public int updateData(BoardVO boardVO) throws Exception{
 		return (int) update("boardDAO.updateData",boardVO);
+	}
+	
+	public int deleteData(BoardVO boardVO) throws Exception{
+		return (int) delete("boardDAO.deleteData", boardVO);
+	}
+	
+	//댓글
+	public BoardVO replyData(BoardVO boardVO) throws Exception{
+		return (BoardVO) select("boardDAO.reply", boardVO);
 	}
 }

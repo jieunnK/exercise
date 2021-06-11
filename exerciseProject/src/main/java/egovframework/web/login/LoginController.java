@@ -41,6 +41,7 @@ public class LoginController extends CommonController{
 		if(!returnUrl.equals("")) {
 			model.addAttribute("returnUrl", returnUrl);
 		}
+		model.addAttribute("title", "login");
 		model.addAttribute("mode", "login");
 		
 		return "exercise/login/login";

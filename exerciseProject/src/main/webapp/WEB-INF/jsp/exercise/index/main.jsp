@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/jsp/exercise/include/header.jsp"%>
+<%@ include file="/WEB-INF/jsp/exercise/include/mainHeader.jsp"%>
 <main> <!--? slider Area Start -->
 <div class="slider-area ">
 	<div class="slider-active">
@@ -377,4 +377,4 @@
 	</div>
 </div>
 <!-- Shop Method End--> </main>
-<%@ include file="/WEB-INF/jsp/exercise/include/bottom.jsp"%>
+<%@ include file="/WEB-INF/jsp/exercise/include/mainBottom.jsp"%>
